@@ -4,8 +4,8 @@ import os
 from keras_preprocessing.image import ImageDataGenerator
 
 # Importing & Preprocessing
-TRAINING_DIR = "tmp/rps/"
-VALIDATION_DIR = "tmp/rps-test-set/"
+TRAINING_DIR = "import_pp/tmp/rps/"
+VALIDATION_DIR = "import_pp/tmp/rps-test-set/"
 images_count = 444  # Dummy value
 seed_ = 123
 batch_size_tr, batch_size_vd = images_count * 0.8, images_count * 0.2
