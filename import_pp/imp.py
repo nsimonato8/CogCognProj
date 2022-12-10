@@ -9,6 +9,9 @@ from keras_preprocessing.image import ImageDataGenerator
 from matplotlib import pyplot as plt
 from torchvision.transforms import transforms
 
+import matplotlib
+matplotlib.use('Agg')
+
 TRAINING_DIR = "import_pp/tmp/rps/"
 VALIDATION_DIR = "import_pp/tmp/rps-test-set/"
 images_count = 444  # Dummy value
