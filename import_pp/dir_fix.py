@@ -30,7 +30,7 @@ scissors_dir = os.path.join('tmp/rps/scissors')
 rock_count = len(os.listdir(rock_dir))
 paper_count = len(os.listdir(paper_dir))
 scissors_count = len(os.listdir(scissors_dir))
-images_count = rock_count + paper_count + scissors_count
+# images_count = rock_count + paper_count + scissors_count
 print('total training rock images:', rock_count)
 print('total training paper images:', paper_count)
 print('total training scissors images:', scissors_count)
@@ -43,3 +43,4 @@ print(paper_files[:10])
 
 scissors_files = os.listdir(scissors_dir)
 print(scissors_files[:10])
+pass
