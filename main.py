@@ -14,7 +14,6 @@ if __name__ == "__main__":
 
     print(f"{'-' * 3}System set up...{'-' * 3}")
     timestamp = datetime.now()
-    print(torch.cuda.is_available())
     device = [torch.device(f"cpu:{i}") for i in range(8)]
     timestamp -= datetime.now()
 
@@ -27,7 +26,7 @@ if __name__ == "__main__":
 
     print("Visualizing some random images:")
     for i in range(5):
-        idx = randint(0, train_dataset.__len__() - 1)
+        idx = int(randint(0, train_dataset.__len__() - 1))
         img = train_dataset.__getitem__(idx)
         print(f"The picture shown is {train_dataset.targets[idx]}")
         plt.imshow(img, cmap='gray')
