@@ -1,9 +1,14 @@
 # Importing the libraries
 import os
 
+import torch.utils.data
+import torchvision
 from keras_preprocessing.image import ImageDataGenerator
 
 # Importing & Preprocessing
+from matplotlib import pyplot as plt
+from torchvision.transforms import transforms
+
 TRAINING_DIR = "import_pp/tmp/rps/"
 VALIDATION_DIR = "import_pp/tmp/rps-test-set/"
 images_count = 444  # Dummy value
@@ -11,20 +16,53 @@ seed_ = 123
 batch_size_tr, batch_size_vd = images_count * 0.8, images_count * 0.2
 img_height, img_width = 150, 150
 
-train_datagen = ImageDataGenerator(rescale=1. / 255)  # Only rescaling is done, in order to not introduce noise in the data. That will be done succesively.
-test_datagen = ImageDataGenerator(rescale=1. / 255)
+# train_datagen = ImageDataGenerator(rescale=1. / 255)  # Only rescaling is done, in order to not introduce noise in the data. That will be done succesively.
+# test_datagen = ImageDataGenerator(rescale=1. / 255)
+#
+# train_generator = train_datagen.flow_from_directory(
+#     TRAINING_DIR,
+#     target_size=(img_height, img_width),
+#     batch_size=batch_size_tr,
+#     class_mode='categorical')
+#
+# validation_generator = test_datagen.flow_from_directory(
+#     VALIDATION_DIR,
+#     target_size=(img_height, img_width),
+#     batch_size=batch_size_vd,
+#     class_mode='categorical')
 
-train_generator = train_datagen.flow_from_directory(
-    TRAINING_DIR,
-    target_size=(img_height, img_width),
-    batch_size=batch_size_tr,
-    class_mode='categorical')
+train_transform = torchvision.Compose([
+    transforms.Resize((img_height, img_width)),
+    transforms.Grayscale(),
+    transforms.RandomHorizontalFlip(),
+    transforms.RandomRotation(),
+    transforms.ToTensor(),
+    transforms.Normalize(0, 255)
+])
 
-validation_generator = test_datagen.flow_from_directory(
-    VALIDATION_DIR,
-    target_size=(img_height, img_width),
-    batch_size=batch_size_vd,
-    class_mode='categorical')
+test_transform = torchvision.Compose([
+    transforms.Resize((img_height, img_width)),
+    transforms.Grayscale(),
+    transforms.ToTensor(),
+    transforms.Normalize(0, 255)
+])
+
+train_ds = torchvision.datasets.ImageFolder(root=TRAINING_DIR, transform=train_transform)
+validation_ds = torchvision.datasets.ImageFolder(root=VALIDATION_DIR, transform=test_transform)
+
+
+def show_processed_imgs(dataset) -> None:
+    loader = torch.utils.data.DataLoader(dataset, batch_size=4, shuffle=True)
+    batch = next(iter(loader))
+    images, labels = batch
+
+    grid = torchvision.utils.make_grid(images, n_row=2)
+    plt.figure(figsize=(11, 11))
+    plt.imshow(grid)
+    plt.show()
+    plt.savefig(f'training_data_peek.png')
+    print(f"Labels: {labels}")
+    pass
 
 
 def get_dbn_library():
