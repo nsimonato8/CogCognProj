@@ -49,26 +49,20 @@ def get_mean_std(dataset):
     return mean/image_count_tot, std/image_count_tot
 
 
-train_ds = torchvision.datasets.ImageFolder(root=TRAINING_DIR)
-validation_ds = torchvision.datasets.ImageFolder(root=VALIDATION_DIR)
-
-train_mean, train_std = get_mean_std(train_ds)
-test_mean, test_std = get_mean_std(validation_ds)
-
 train_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
     transforms.Grayscale(),
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(10),
     transforms.ToTensor(),
-    transforms.Normalize(torch.Tensor(train_mean), torch.Tensor(train_std))
+    # transforms.Normalize(torch.Tensor(train_mean), torch.Tensor(train_std))
 ])
 
 test_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
     transforms.Grayscale(),
     transforms.ToTensor(),
-    transforms.Normalize(torch.Tensor(test_mean), torch.Tensor(test_std))
+    # transforms.Normalize(torch.Tensor(test_mean), torch.Tensor(test_std))
 ])
 
 train_ds = torchvision.datasets.ImageFolder(root=TRAINING_DIR, transform=train_transform)
