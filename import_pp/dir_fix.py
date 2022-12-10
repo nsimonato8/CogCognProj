@@ -7,7 +7,7 @@ os.system("wget --no-check-certificate \
     https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps.zip \
     -O tmp/rps.zip")
 
-os.system("!wget --no-check-certificate \
+os.system("wget --no-check-certificate \
     https://storage.googleapis.com/laurencemoroney-blog.appspot.com/rps-test-set.zip \
     -O tmp/rps-test-set.zip")
 
