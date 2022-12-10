@@ -60,7 +60,7 @@ def show_processed_imgs(dataset) -> None:
 
     grid = torchvision.utils.make_grid(images, n_row=3)
     plt.figure(figsize=(11, 11))
-    plt.show(np.transpose(grid, (1, 2, 0)))
+    plt.show(grid)
     plt.savefig(f'training_data_peek.png')
     print(f"Labels: {labels}\n")
     pass
