@@ -11,15 +11,7 @@ seed_ = 123
 batch_size_tr, batch_size_vd = images_count * 0.8, images_count * 0.2
 img_height, img_width = 150, 150
 
-train_datagen = ImageDataGenerator(
-    rescale=1. / 255,
-    rotation_range=40,
-    width_shift_range=0.2,
-    height_shift_range=0.2,
-    shear_range=0.2,
-    zoom_range=0.2,
-    horizontal_flip=True,
-    fill_mode='nearest')
+train_datagen = ImageDataGenerator(rescale=1. / 255)  # Only rescaling is done, in order to not introduce noise in the data. That will be done succesively.
 test_datagen = ImageDataGenerator(rescale=1. / 255)
 
 train_generator = train_datagen.flow_from_directory(
