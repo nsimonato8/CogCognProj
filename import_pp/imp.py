@@ -1,16 +1,13 @@
-# Importing the libraries
+import matplotlib
+matplotlib.use('Agg')
 import os
 
 import torch.utils.data
 import torchvision
-from keras_preprocessing.image import ImageDataGenerator
 
 # Importing & Preprocessing
 from matplotlib import pyplot as plt
 from torchvision.transforms import transforms
-
-import matplotlib
-matplotlib.use('Agg')
 
 TRAINING_DIR = "import_pp/tmp/rps/"
 VALIDATION_DIR = "import_pp/tmp/rps-test-set/"
