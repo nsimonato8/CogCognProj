@@ -24,7 +24,6 @@ if __name__ == "__main__":
 
     print("Visualizing some random images:")
     show_processed_imgs(train_dataset)
-
     timestamp -= datetime.now()
     print(f"Done! Time elapsed: {timestamp}")
 

@@ -31,7 +31,7 @@ img_height, img_width = 150, 150
 #     batch_size=batch_size_vd,
 #     class_mode='categorical')
 
-train_transform = torchvision.Compose([
+train_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
     transforms.Grayscale(),
     transforms.RandomHorizontalFlip(),
@@ -40,7 +40,7 @@ train_transform = torchvision.Compose([
     transforms.Normalize(0, 255)
 ])
 
-test_transform = torchvision.Compose([
+test_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
     transforms.Grayscale(),
     transforms.ToTensor(),
