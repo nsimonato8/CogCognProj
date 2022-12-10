@@ -35,7 +35,7 @@ train_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
     transforms.Grayscale(),
     transforms.RandomHorizontalFlip(),
-    transforms.RandomRotation(),
+    transforms.RandomRotation(10),
     transforms.ToTensor(),
     transforms.Normalize(0, 255)
 ])
