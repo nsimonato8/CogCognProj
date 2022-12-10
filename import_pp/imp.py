@@ -54,11 +54,11 @@ validation_ds = torchvision.datasets.ImageFolder(root=VALIDATION_DIR, transform=
 
 
 def show_processed_imgs(dataset) -> None:
-    loader = torch.utils.data.DataLoader(dataset, batch_size=1, shuffle=True)
+    loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True)
     batch = next(iter(loader))
     images, labels = batch
 
-    grid = torchvision.utils.make_grid(images, n_row=1)
+    grid = torchvision.utils.make_grid(images, n_row=3)
     plt.figure(figsize=(25, 25))
     plt.imshow(grid.permute(1, 2, 0))
     plt.savefig(f'training_data_peek.png')
