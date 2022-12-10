@@ -33,20 +33,42 @@ img_height, img_width = 150, 150
 #     batch_size=batch_size_vd,
 #     class_mode='categorical')
 
+
+def get_mean_std(dataset):
+    mean, std = 0., 0.
+    loader = torch.utils.data.DataLoader(dataset=dataset, batch_size=50, shuffle=True)
+    image_count_tot = 0
+
+    for images, _ in loader:
+        image_count = images.size(0)
+        images = images.view(image_count, images.size(1), -1)
+        mean += images.mean(2).sum(0)
+        std += images.std(2).sum(0)
+        image_count_tot += image_count
+
+    return mean/image_count_tot, std/image_count_tot
+
+
+train_ds = torchvision.datasets.ImageFolder(root=TRAINING_DIR)
+validation_ds = torchvision.datasets.ImageFolder(root=VALIDATION_DIR)
+
+train_mean, train_std = get_mean_std(train_ds)
+test_mean, test_std = get_mean_std(validation_ds)
+
 train_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
     transforms.Grayscale(),
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(10),
     transforms.ToTensor(),
-    transforms.Normalize(0, 255)
+    transforms.Normalize(torch.Tensor(train_mean), torch.Tensor(train_std))
 ])
 
 test_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
     transforms.Grayscale(),
     transforms.ToTensor(),
-    transforms.Normalize(0, 255)
+    transforms.Normalize(torch.Tensor(test_mean), torch.Tensor(test_std))
 ])
 
 train_ds = torchvision.datasets.ImageFolder(root=TRAINING_DIR, transform=train_transform)
@@ -71,5 +93,3 @@ def get_dbn_library():
     repository_url = "https://raw.githubusercontent.com/flavio2018/Deep-Belief-Network-pytorch/master/"
     for file in files:
         os.system("wget -O {file} {repository_url}{file}")
-
-
