@@ -14,7 +14,7 @@ if __name__ == "__main__":
     timestamp = datetime.now()
     device = [torch.device(f"cpu:{i}") for i in range(8)]
     print(f"\tNumber of devices: {len(device)}")
-    timestamp -= datetime.now()
+    timestamp = datetime.now() - timestamp
     print(f"\tDone! Time elapsed: {timestamp}\n")
 
     print(f"{'-' * 3}Importing dataset...{'-' * 3}")
@@ -25,11 +25,11 @@ if __name__ == "__main__":
 
     print("Visualizing some random images:")
     show_processed_imgs(train_dataset)
-    timestamp -= datetime.now()
+    timestamp = datetime.now() - timestamp
     print(f"Done! Time elapsed: {timestamp}\n")
 
     # print(f"{'-' * 3}Preprocessing RPS images...{'-' * 3}")
     # timestamp = datetime.now()
     # data_preprocessing()
-    # timestamp -= datetime.now()
+    # timestamp = datetime.now() - timestamp
     # print(f"Done! Time elapsed: {timestamp}")
