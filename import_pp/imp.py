@@ -1,4 +1,6 @@
 import matplotlib
+import numpy as np
+
 matplotlib.use('Agg')
 import os
 
@@ -52,13 +54,13 @@ validation_ds = torchvision.datasets.ImageFolder(root=VALIDATION_DIR, transform=
 
 
 def show_processed_imgs(dataset) -> None:
-    loader = torch.utils.data.DataLoader(dataset, batch_size=4, shuffle=True)
+    loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True)
     batch = next(iter(loader))
     images, labels = batch
 
-    grid = torchvision.utils.make_grid(images, n_row=2)
+    grid = torchvision.utils.make_grid(images, n_row=3)
     plt.figure(figsize=(11, 11))
-    plt.imshow(grid)
+    plt.imshow(np.transpose(grid, (1, 2, 0)))
     plt.show()
     plt.savefig(f'training_data_peek.png')
     print(f"Labels: {labels}")
