@@ -13,9 +13,9 @@ from torchvision.transforms import transforms
 
 TRAINING_DIR = "import_pp/tmp/rps/"
 VALIDATION_DIR = "import_pp/tmp/rps-test-set/"
-images_count = 444  # Dummy value
+images_count = 32  # Dummy value
 seed_ = 123
-batch_size_tr, batch_size_vd = images_count * 0.8, images_count * 0.2
+batch_size_tr, batch_size_vd = images_count, images_count
 img_height, img_width = 150, 150
 
 # train_datagen = ImageDataGenerator(rescale=1. / 255)  # Only rescaling is done, in order to not introduce noise in the data. That will be done succesively.
