@@ -1,5 +1,3 @@
-import os
-
 import numpy as np
 import torch.utils.data
 import torchvision as tv
@@ -60,10 +58,14 @@ test_transform = transforms.Compose([
     transforms.ToTensor()
 ])
 
-train_ds = tv.datasets.EMNIST('data/', train=True, download=True,
+train_ds = tv.datasets.EMNIST('data/',
+                              split="byclass",
+                              train=True,
+                              download=True,
                               transform=train_transform)
 
 validation_ds = tv.datasets.EMNIST("data/",
+                                   split="byclass",
                                    train=False,
                                    download=True,
                                    transform=test_transform)
@@ -80,10 +82,3 @@ def show_processed_imgs(dataset) -> None:
     plt.savefig(f'training_data_peek.png')
     print(f"Labels: {labels}\n")
     pass
-
-
-def get_dbn_library():
-    files = ["DBN.py", "RBM.py"]
-    repository_url = "https://raw.githubusercontent.com/flavio2018/Deep-Belief-Network-pytorch/master/"
-    for file in files:
-        os.system("wget -O {file} {repository_url}{file}")
