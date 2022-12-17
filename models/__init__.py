@@ -1,1 +1,1 @@
-from RBM import RBM
+from .RBM import RBM
