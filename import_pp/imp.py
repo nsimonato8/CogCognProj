@@ -11,6 +11,7 @@ images_count = 32  # Dummy value
 seed_ = 123
 batch_size_tr, batch_size_vd = images_count, images_count
 img_height, img_width = 150, 150
+split = "digits"
 
 
 def get_mean_std(dataset):
@@ -43,13 +44,13 @@ test_transform = transforms.Compose([
 ])
 
 train_ds = tv.datasets.EMNIST('data/',
-                              split="byclass",
+                              split=split,
                               train=True,
                               download=True,
                               transform=train_transform)
 
 validation_ds = tv.datasets.EMNIST("data/",
-                                   split="byclass",
+                                   split=split,
                                    train=False,
                                    download=True,
                                    transform=test_transform)
