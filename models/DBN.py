@@ -1,14 +1,14 @@
 """This file contains the implementation of a Deep Belief Network, stacking several Restricted Boltzmann Machines
 implemented in RBM.py."""
 import torch
-from torch.autograd import Variable
 import torch.nn as nn
-import torch.nn.functional as F
-from RBM import RBM
+
+from models.RBM import RBM
 
 
 class DBN(nn.Module):
     """Class implementing a DBN using the basic RBM class."""
+
     def __init__(self,
                  visible_units=256,
                  hidden_units=[64, 100],
