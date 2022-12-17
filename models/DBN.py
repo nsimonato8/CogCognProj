@@ -35,17 +35,17 @@ class DBN(nn.Module):
                 input_size = visible_units
             else:
                 input_size = hidden_units[i - 1]
-            rbm = RBM(visible_units=input_size,
-                      hidden_units=hidden_units[i],
-                      k=k,
-                      learning_rate=learning_rate,
-                      learning_rate_decay=learning_rate_decay,
-                      weight_decay=weight_decay,
-                      initial_momentum=initial_momentum,
-                      final_momentum=final_momentum,
-                      xavier_init=xavier_init,
-                      increase_to_cd_k=increase_to_cd_k,
-                      use_gpu=use_gpu)
+            rbm = RBM.RBM(visible_units=input_size,
+                          hidden_units=hidden_units[i],
+                          k=k,
+                          learning_rate=learning_rate,
+                          learning_rate_decay=learning_rate_decay,
+                          weight_decay=weight_decay,
+                          initial_momentum=initial_momentum,
+                          final_momentum=final_momentum,
+                          xavier_init=xavier_init,
+                          increase_to_cd_k=increase_to_cd_k,
+                          use_gpu=use_gpu)
 
             self.rbm_layers.append(rbm)
 
