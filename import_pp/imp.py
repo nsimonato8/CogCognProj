@@ -10,7 +10,7 @@ from torchvision.transforms import transforms
 images_count = 32  # Dummy value
 seed_ = 123
 batch_size_tr, batch_size_vd = images_count, images_count
-img_height, img_width = 50, 50
+img_height, img_width = 28, 28
 split = "digits"
 
 
@@ -37,14 +37,13 @@ def show_processed_imgs(dataset) -> None:
     grid = tv.utils.make_grid(images, n_row=3)
     plt.figure(figsize=(25, 25))
     plt.imshow(np.transpose(grid, (1, 2, 0)))
-    plt.savefig(f'training_data_peek.png')
+    # plt.savefig(f'training_data_peek.png')
     print(f"Labels: {labels}\n")
     pass
 
 
 train_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
-    transforms.Grayscale(),
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(10),
     transforms.ToTensor()
@@ -52,7 +51,6 @@ train_transform = transforms.Compose([
 
 test_transform = transforms.Compose([
     transforms.Resize((img_height, img_width)),
-    transforms.Grayscale(),
     transforms.ToTensor()
 ])
 
@@ -67,3 +65,6 @@ validation_ds = tv.datasets.EMNIST("data/",
                                    train=False,
                                    download=True,
                                    transform=test_transform)
+
+train_ds.data = (train_ds.data.type(torch.FloatTensor) / 255)
+validation_ds.data = (validation_ds.data.type(torch.FloatTensor) / 255)
