@@ -10,7 +10,7 @@ from torchvision.transforms import transforms
 images_count = 32  # Dummy value
 seed_ = 123
 batch_size_tr, batch_size_vd = images_count, images_count
-img_height, img_width = 50, 50
+img_height, img_width = 30, 30
 split = "digits"
 
 
