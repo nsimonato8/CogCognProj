@@ -10,7 +10,7 @@ from torchvision.transforms import transforms
 images_count = 32  # Dummy value
 seed_ = 123
 batch_size_tr, batch_size_vd = images_count, images_count
-img_height, img_width = 150, 150
+img_height, img_width = 50, 50
 split = "digits"
 
 
@@ -27,6 +27,19 @@ def get_mean_std(dataset):
         image_count_tot += image_count
 
     return mean / image_count_tot, std / image_count_tot
+
+
+def show_processed_imgs(dataset) -> None:
+    loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True)
+    batch = next(iter(loader))
+    images, labels = batch
+
+    grid = tv.utils.make_grid(images, n_row=3)
+    plt.figure(figsize=(25, 25))
+    plt.imshow(np.transpose(grid, (1, 2, 0)))
+    plt.savefig(f'training_data_peek.png')
+    print(f"Labels: {labels}\n")
+    pass
 
 
 train_transform = transforms.Compose([
@@ -54,16 +67,3 @@ validation_ds = tv.datasets.EMNIST("data/",
                                    train=False,
                                    download=True,
                                    transform=test_transform)
-
-
-def show_processed_imgs(dataset) -> None:
-    loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True)
-    batch = next(iter(loader))
-    images, labels = batch
-
-    grid = tv.utils.make_grid(images, n_row=3)
-    plt.figure(figsize=(25, 25))
-    plt.imshow(np.transpose(grid, (1, 2, 0)))
-    plt.savefig(f'training_data_peek.png')
-    print(f"Labels: {labels}\n")
-    pass
