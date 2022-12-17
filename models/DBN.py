@@ -3,7 +3,7 @@ implemented in RBM.py."""
 import torch
 import torch.nn as nn
 
-from models import RBM
+import RBM
 
 
 class DBN(nn.Module):
