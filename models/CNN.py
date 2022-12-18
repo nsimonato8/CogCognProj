@@ -67,7 +67,7 @@ def train_CNN(model, num_epoch, train_ds, test_ds, device, optimizer=None, loss_
         valid_loss = 0.0
 
         model.train()
-        for img, lbl in train_ds_loader:
+        for img, lbl in train_ds_loader.cpu():
             img = img.cuda()
             lbl = lbl.cuda()
 
