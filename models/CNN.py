@@ -48,7 +48,7 @@ class CNN(nn.Module):
         return x
 
 
-def train_CNN(model, num_epoch, train_ds, test_ds, device, optimizer=None, loss_fn=None, learning_rate=0.1,
+def train_CNN(model, num_epoch, train_ds, test_ds, optimizer=None, loss_fn=None, learning_rate=0.1,
               momentum=0.9,
               batch_size=32):
     timestamp = datetime.now()

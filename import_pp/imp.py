@@ -28,7 +28,7 @@ def get_mean_std(dataset):
 
 
 def show_processed_imgs(dataset) -> None:
-    loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True)
+    loader = torch.utils.data.DataLoader(dataset.data.cpu(), batch_size=6, shuffle=True)
     batch = next(iter(loader))
     images, labels = batch
 
