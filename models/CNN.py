@@ -7,10 +7,11 @@ from torch import nn
 # https://androidkt.com/convolutional-neural-network-using-sequential-model-in-pytorch/
 
 class CNN(nn.Module):
-    def __init__(self, input_shape):
+    def __init__(self, input_shape, device=None):
         super().__init__()
+        self.input_shape = input_shape
         self.model = nn.Sequential(
-            nn.Conv2d(input_shape[0] * input_shape[1], 64, kernel_size=(3, 3), padding=0),
+            nn.Conv2d(self.input_shape[0] * self.input_shape[1], 64, kernel_size=(3, 3), padding=0),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
 
@@ -24,6 +25,9 @@ class CNN(nn.Module):
             nn.Linear(1024, 512),
             nn.ReLU(),
             nn.Linear(512, 3))
+
+        if device is not None:
+            self.model.to(device)
 
     # Prediction (x is input)
     # The forward function is automatically called when we create an instance of the class and call it.
@@ -44,15 +48,16 @@ class CNN(nn.Module):
         return x
 
 
-def train_CNN(model, num_epoch, train_ds, test_ds, optimizer=None, loss_fn=None, learning_rate=0.001, momentum=0.9,
+def train_CNN(model, num_epoch, train_ds, test_ds, device, optimizer=None, loss_fn=None, learning_rate=0.1,
+              momentum=0.9,
               batch_size=32):
     timestamp = datetime.now()
     if optimizer is None or loss_fn is None:
         optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum)
         loss_fn = nn.CrossEntropyLoss()
 
-    train_ds_loader = torch.utils.data.DataLoader(train_ds, shuffle=True, batch_size=batch_size, num_workers=8)
-    test_ds_loader = torch.utils.data.DataLoader(test_ds, shuffle=True, batch_size=batch_size, num_workers=8)
+    train_ds_loader = torch.utils.data.DataLoader(train_ds, shuffle=True, batch_size=batch_size)
+    test_ds_loader = torch.utils.data.DataLoader(test_ds, shuffle=True, batch_size=batch_size)
 
     train_losses = []
     valid_losses = []
