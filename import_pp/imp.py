@@ -5,11 +5,10 @@ import numpy as np
 import torch.utils.data
 import torchvision as tv
 from matplotlib import pyplot as plt
+from torchvision.transforms import functional
 from torchvision.transforms import transforms
 
-images_count = 32  # Dummy value
 seed_ = 123
-batch_size_tr, batch_size_vd = images_count, images_count
 split = "letters"
 
 
@@ -65,7 +64,7 @@ validation_ds = tv.datasets.EMNIST("data/",
                                    download=True,
                                    transform=test_transform)
 
-img_height, img_width = train_ds.__getitem__(0)[0].shape[1], train_ds.__getitem__(0)[0].shape[0]
+img_width, img_height = functional.get_image_size(train_ds.__getitem__(0)[0])
 
 # train_ds.data = (train_ds.data.type(torch.FloatTensor) / 255)
 # validation_ds.data = (validation_ds.data.type(torch.FloatTensor) / 255)
