@@ -29,13 +29,13 @@ def get_mean_std(dataset):
 
 def show_processed_imgs(dataset) -> None:
     dataset.data.to("cpu")
-    dataset.target.to("cpu")
+    dataset.targets.to("cpu")
     loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True)
     batch = next(iter(loader))
     images, labels = batch
 
     dataset.data.to("cuda:0")
-    dataset.target.to("cuda:0")
+    dataset.targets.to("cuda:0")
 
     grid = tv.utils.make_grid(images, n_row=3)
     plt.figure(figsize=(25, 25))
