@@ -10,8 +10,7 @@ from torchvision.transforms import transforms
 images_count = 32  # Dummy value
 seed_ = 123
 batch_size_tr, batch_size_vd = images_count, images_count
-img_height, img_width = 30, 30
-split = "digits"
+split = "letters"
 
 
 def get_mean_std(dataset):
@@ -43,7 +42,6 @@ def show_processed_imgs(dataset) -> None:
 
 
 train_transform = transforms.Compose([
-    transforms.Resize((img_height, img_width)),
     transforms.Grayscale(num_output_channels=1),
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(10),
@@ -51,7 +49,6 @@ train_transform = transforms.Compose([
 ])
 
 test_transform = transforms.Compose([
-    transforms.Resize((img_height, img_width)),
     transforms.Grayscale(num_output_channels=1),
     transforms.ToTensor()
 ])
@@ -67,6 +64,8 @@ validation_ds = tv.datasets.EMNIST("data/",
                                    train=False,
                                    download=True,
                                    transform=test_transform)
+
+img_height, img_width = train_ds.__getitem__(0)[0].shape[1], train_ds.__getitem__(0)[0].shape[0]
 
 # train_ds.data = (train_ds.data.type(torch.FloatTensor) / 255)
 # validation_ds.data = (validation_ds.data.type(torch.FloatTensor) / 255)
