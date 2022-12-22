@@ -30,9 +30,8 @@ def get_mean_std(dataset):
 
 def show_processed_imgs(dataset) -> None:
     loader = torch.utils.data.DataLoader(dataset, batch_size=6,
-                                         shuffle=True, num_workers=2)
-    dataiter = iter(loader)
-    images, labels = next(dataiter)
+                                         shuffle=True)
+    images, labels = next(iter(loader))
     img = tv.utils.make_grid(images)
     img = img / 2 + 0.5  # unnormalize
     npimg = img.numpy()
