@@ -37,14 +37,14 @@ def show_processed_imgs(dataset) -> None:
 
 
 train_transform = transforms.Compose([
-    transforms.Grayscale(num_output_channels=3),
+    # transforms.Grayscale(num_output_channels=3),
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(10),
     transforms.ToTensor()
 ])
 
 test_transform = transforms.Compose([
-    transforms.Grayscale(num_output_channels=3),
+    # transforms.Grayscale(num_output_channels=3),
     transforms.ToTensor()
 ])
 
@@ -61,6 +61,3 @@ validation_ds = tv.datasets.EMNIST("data/",
                                    transform=test_transform)
 
 img_width, img_height = functional.get_image_size(train_ds.__getitem__(0)[0])
-
-# train_ds.data = (train_ds.data.type(torch.FloatTensor) / 255)
-# validation_ds.data = (validation_ds.data.type(torch.FloatTensor) / 255)
