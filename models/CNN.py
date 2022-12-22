@@ -10,9 +10,8 @@ class CNN:
     def __init__(self, input_shape, n_classes=26, optimizer=None, loss_fn=None, learning_rate=0.1,
                  momentum=0.9, device=None):
         super().__init__()
-        self.input_shape = input_shape
         self.model = nn.Sequential(
-            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(3, 3), padding=1),
+            nn.Conv2d(in_channels=1, out_channels=64, kernel_size=(3, 3), padding=1),
             nn.ReLU(),
             nn.MaxPool2d(kernel_size=(2, 2)),
 
