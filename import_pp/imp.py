@@ -1,7 +1,6 @@
 """
 Importing & Preprocessing module
 """
-import random
 
 import numpy as np
 import torch.utils.data
@@ -30,14 +29,14 @@ def get_mean_std(dataset):
 
 
 def show_processed_imgs(dataset) -> None:
-    img = [torch.tensor(dataset.__getitem__(random.randint(1, 6)).cpu()) for _ in range(6)]
-    images, labels = list(map(lambda x: x[0], img)), list(map(lambda x: x[1], img))
-
-    grid = tv.utils.make_grid(images, n_row=3)
-    plt.figure(figsize=(25, 25))
-    plt.imshow(np.transpose(grid, (1, 2, 0)))
-    plt.savefig(f'training_data_peek.png')
-    print(f"Labels: {labels}\n")
+    loader = torch.utils.data.DataLoader(dataset, batch_size=6,
+                                         shuffle=True, num_workers=2)
+    dataiter = iter(loader)
+    images, labels = next(dataiter)
+    img = tv.utils.make_grid(images)
+    img = img / 2 + 0.5  # unnormalize
+    npimg = img.numpy()
+    plt.imshow(np.transpose(npimg, (1, 2, 0)))
     pass
 
 
