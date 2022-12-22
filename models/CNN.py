@@ -1,25 +1,23 @@
 import tensorflow as tf
-from tensorflow.keras import layers, models
 
 
 # https://androidkt.com/convolutional-neural-network-using-sequential-model-in-pytorch/
 
 class CNN:
-    def __init__(self, input_shape, n_classes=26, activation='relu', optimizer='', loss_fn=None, learning_rate=0.1,
-                 momentum=0.9, device=None):
+    def __init__(self, input_shape, n_classes=26, activation='relu', optimizer='', loss_fn=None, device=None):
         super().__init__()
         self.optimizer = optimizer
-        self.model = models.Sequential(layers=[
-            layers.Conv2d(filter=2, input_shape=input_shape, activation=activation, kernel_size=(3, 3),
-                          padding='valid'),
-            layers.MaxPooling2d(kernel_size=(2, 2)),
+        self.model = tf.keras.models.Sequential(layers=[
+            tf.keras.layers.Conv2d(filter=2, input_shape=input_shape, activation=activation, kernel_size=(3, 3),
+                                   padding='valid'),
+            tf.keras.layers.MaxPooling2d(kernel_size=(2, 2)),
 
-            layers.Conv2d(filter=64, activation=activation, kernel_size=(3, 3), padding='valid'),
-            layers.MaxPooling2d(kernel_size=(2, 2)),
+            tf.keras.layers.Conv2d(filter=64, activation=activation, kernel_size=(3, 3), padding='valid'),
+            tf.keras.layers.MaxPooling2d(kernel_size=(2, 2)),
 
-            layers.Flatten(),
-            layers.Dense(64),
-            layers.Dense(n_classes)])
+            tf.keras.layers.Flatten(),
+            tf.keras.layers.Dense(64),
+            tf.keras.layers.Dense(n_classes)])
 
         if loss_fn is None:
             self.loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
