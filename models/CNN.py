@@ -12,6 +12,7 @@ class CNN:
         super().__init__()
         self.input_shape = input_shape
         self.model = nn.Sequential(
+            nn.Conv2d(input_shape[0] * input_shape[1], 64, kernel_size=(3, 3), padding=1),
             nn.Conv2d(32, 64, kernel_size=(3, 3), padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
@@ -21,11 +22,11 @@ class CNN:
             nn.MaxPool2d(2, 2),
 
             nn.Flatten(),
-            nn.Linear(128 * 4 * 4, 1024),
+            nn.Linear(128, 256),
             nn.ReLU(),
-            nn.Linear(1024, 512),
+            nn.Linear(256, 512),
             nn.ReLU(),
-            nn.Linear(512, 3))
+            nn.Linear(512, 26))
 
         if optimizer is None or loss_fn is None:
             self.optimizer = torch.optim.SGD(self.model.parameters(), lr=learning_rate, momentum=momentum)
