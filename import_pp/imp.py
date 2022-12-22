@@ -30,7 +30,7 @@ def get_mean_std(dataset):
 def show_processed_imgs(dataset) -> None:
     from torch.utils.data.dataloader import default_collate
     loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True,
-                                         collate_fn=lambda x: tuple(x_.to("cpu") for x_ in default_collate(x)))
+                                         collate_fn=lambda x: default_collate(x).to("cpu"))
     batch = next(loader.__iter__())
     images, labels = batch
 
