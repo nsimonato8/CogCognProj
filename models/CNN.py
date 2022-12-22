@@ -7,26 +7,26 @@ from torch import nn
 # https://androidkt.com/convolutional-neural-network-using-sequential-model-in-pytorch/
 
 class CNN:
-    def __init__(self, input_shape, optimizer=None, loss_fn=None, learning_rate=0.1,
+    def __init__(self, input_shape, n_classes=26, optimizer=None, loss_fn=None, learning_rate=0.1,
                  momentum=0.9, device=None):
         super().__init__()
         self.input_shape = input_shape
         self.model = nn.Sequential(
-            nn.Conv2d(input_shape[0] * input_shape[1], 64, kernel_size=(3, 3), padding=1),
-            nn.Conv2d(32, 64, kernel_size=(3, 3), padding=1),
+            nn.Conv2d(in_channels=input_shape[0] * input_shape[1], out_channels=64, kernel_size=(3, 3), padding=1),
+            nn.Conv2d(in_channels=32, out_channels=64, kernel_size=(3, 3), padding=1),
             nn.ReLU(),
-            nn.MaxPool2d(2, 2),
+            nn.MaxPool2d(kernel_size=(2, 2)),
 
-            nn.Conv2d(64, 128, kernel_size=(3, 3), padding=1),
+            nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(3, 3), padding=1),
             nn.ReLU(),
-            nn.MaxPool2d(2, 2),
+            nn.MaxPool2d(kernel_size=(2, 2)),
 
             nn.Flatten(),
             nn.Linear(128, 256),
             nn.ReLU(),
             nn.Linear(256, 512),
             nn.ReLU(),
-            nn.Linear(512, 26))
+            nn.Linear(512, n_classes))
 
         if optimizer is None or loss_fn is None:
             self.optimizer = torch.optim.SGD(self.model.parameters(), lr=learning_rate, momentum=momentum)
