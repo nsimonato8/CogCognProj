@@ -31,6 +31,9 @@ def show_processed_imgs(dataset) -> None:
     from torch.utils.data.dataloader import default_collate
     loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True,
                                          collate_fn=lambda x: default_collate(x).cuda().detach())
+
+    print("AAAAAAAAAAA")
+
     batch = next(loader.__iter__())
     images, labels = batch
 
