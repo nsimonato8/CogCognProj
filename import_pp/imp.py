@@ -31,8 +31,9 @@ def show_processed_imgs(dataset) -> None:
     from torch.utils.data.dataloader import default_collate
     loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True,
                                          collate_fn=lambda x: default_collate(x).cpu().detach())
-    batch = loader[0]
-    images, labels = batch
+    # batch = loader[0]
+    # images, labels = batch
+    images, labels = loader.dataset
 
     grid = tv.utils.make_grid(images, n_row=3)
     plt.figure(figsize=(25, 25))
