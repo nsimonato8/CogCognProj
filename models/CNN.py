@@ -12,11 +12,11 @@ class CNN:
         super().__init__()
         self.input_shape = input_shape
         self.model = nn.Sequential(
-            nn.Conv2d(self.input_shape[0] * self.input_shape[1], 64, kernel_size=(3, 3), padding=0),
+            nn.Conv2d(32, 64, kernel_size=(3, 3), padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
 
-            nn.Conv2d(64, 128, kernel_size=(3, 3), padding=0),
+            nn.Conv2d(64, 128, kernel_size=(3, 3), padding=1),
             nn.ReLU(),
             nn.MaxPool2d(2, 2),
 
