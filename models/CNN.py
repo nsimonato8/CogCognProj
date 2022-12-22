@@ -7,7 +7,7 @@ from torch import nn
 # https://androidkt.com/convolutional-neural-network-using-sequential-model-in-pytorch/
 
 class CNN:
-    def __init__(self, input_shape, optimizer, loss_fn, learning_rate=0.1,
+    def __init__(self, input_shape, optimizer=None, loss_fn=None, learning_rate=0.1,
                  momentum=0.9, device=None):
         super().__init__()
         self.input_shape = input_shape
