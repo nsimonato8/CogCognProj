@@ -3,7 +3,6 @@ Importing & Preprocessing module
 """
 import random
 
-import numpy as np
 import torch.utils.data
 import torchvision as tv
 from matplotlib import pyplot as plt
@@ -32,9 +31,8 @@ def get_mean_std(dataset):
 def show_processed_imgs(dataset) -> None:
     idx = random.randint(1, 4)
     img, label = dataset.data[idx], dataset.targets[idx]
-    npimg = img.numpy()
-    plt.imshow(np.transpose(npimg, (1, 2, 0)))
     print(f"Label: {label}")
+    plt.imshow(img, cmap="gray")
     pass
 
 
