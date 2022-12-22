@@ -30,7 +30,8 @@ def get_mean_std(dataset):
 
 
 def show_processed_imgs(dataset) -> None:
-    images, labels = dataset.__getitem__(random.randint(1, 6))
+    img = [dataset.__getitem__(random.randint(1, 6)) for _ in range(6)]
+    images, labels = list(map(lambda x: x[0], img)), list(map(lambda x: x[1], img))
 
     grid = tv.utils.make_grid(images, n_row=3)
     plt.figure(figsize=(25, 25))
