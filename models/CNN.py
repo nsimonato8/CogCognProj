@@ -6,8 +6,9 @@ from torch import nn
 
 # https://androidkt.com/convolutional-neural-network-using-sequential-model-in-pytorch/
 
-class CNN(nn.Module):
-    def __init__(self, input_shape, device=None):
+class CNN:
+    def __init__(self, input_shape, optimizer, loss_fn, learning_rate=0.1,
+                 momentum=0.9, device=None):
         super().__init__()
         self.input_shape = input_shape
         self.model = nn.Sequential(
@@ -26,73 +27,54 @@ class CNN(nn.Module):
             nn.ReLU(),
             nn.Linear(512, 3))
 
+        if optimizer is None or loss_fn is None:
+            self.optimizer = torch.optim.SGD(self.model.parameters(), lr=learning_rate, momentum=momentum)
+            self.loss_fn = nn.CrossEntropyLoss()
+
         if device is not None:
             self.model.to(device)
+        pass
 
-    # Prediction (x is input)
-    # The forward function is automatically called when we create an instance of the class and call it.
-    def forward(self, x):
-        x = self.cnn1(x)
-        x = self.conv1_bn(x)
-        x = self.leaky_relu(x)
-        x = self.maxpool1(x)
+    def train_CNN(self, num_epoch, train_ds, test_ds, batch_size=32):
+        timestamp = datetime.now()
 
-        x = self.cnn2(x)
-        x = self.conv2_bn(x)
-        x = self.leaky_relu(x)
-        x = self.maxpool2(x)
+        train_ds_loader = torch.utils.data.DataLoader(train_ds, shuffle=True, batch_size=batch_size)
+        test_ds_loader = torch.utils.data.DataLoader(test_ds, shuffle=True, batch_size=batch_size)
 
-        # Flattening cnn2's output and passing it into a fully connected layer
-        x = x.view(x.size(0), -1)
-        x = self.fc1(x)
-        return x
+        train_losses = []
+        valid_losses = []
 
+        for epoch in range(1, num_epoch + 1):
+            train_loss = 0.0
+            valid_loss = 0.0
 
-def train_CNN(model, num_epoch, train_ds, test_ds, optimizer=None, loss_fn=None, learning_rate=0.1,
-              momentum=0.9,
-              batch_size=32):
-    timestamp = datetime.now()
-    if optimizer is None or loss_fn is None:
-        optimizer = torch.optim.SGD(model.parameters(), lr=learning_rate, momentum=momentum)
-        loss_fn = nn.CrossEntropyLoss()
+            self.model.train()
+            for img, lbl in train_ds_loader:
+                img = img.cuda()
+                lbl = lbl.cuda()
 
-    train_ds_loader = torch.utils.data.DataLoader(train_ds, shuffle=True, batch_size=batch_size)
-    test_ds_loader = torch.utils.data.DataLoader(test_ds, shuffle=True, batch_size=batch_size)
+                self.optimizer.zero_grad()
+                predict = self.model(img)
+                loss = self.loss_fn(predict, lbl)
+                loss.backward()
+                self.optimizer.step()
+                train_loss += loss.item() * img.size(0)
 
-    train_losses = []
-    valid_losses = []
+            self.model.eval()
+            for img, lbl in test_ds_loader:
+                img = img.cuda()
+                lbl = lbl.cuda()
 
-    for epoch in range(1, num_epoch + 1):
-        train_loss = 0.0
-        valid_loss = 0.0
+                predict = self.model(img)
+                loss = self.loss_fn(predict, lbl)
 
-        model.train()
-        for img, lbl in train_ds_loader:
-            img = img.cuda()
-            lbl = lbl.cuda()
+                valid_loss += loss.item() * img.size(0)
 
-            optimizer.zero_grad()
-            predict = model(img)
-            loss = loss_fn(predict, lbl)
-            loss.backward()
-            optimizer.step()
-            train_loss += loss.item() * img.size(0)
+            train_loss = train_loss / len(train_ds_loader.sampler)
+            valid_loss = valid_loss / len(test_ds_loader.sampler)
 
-        model.eval()
-        for img, lbl in test_ds_loader:
-            img = img.cuda()
-            lbl = lbl.cuda()
+            train_losses.append(train_loss)
+            valid_losses.append(valid_loss)
 
-            predict = model(img)
-            loss = loss_fn(predict, lbl)
-
-            valid_loss += loss.item() * img.size(0)
-
-        train_loss = train_loss / len(train_ds_loader.sampler)
-        valid_loss = valid_loss / len(test_ds_loader.sampler)
-
-        train_losses.append(train_loss)
-        valid_losses.append(valid_loss)
-
-        print('Epoch:{} Train Loss:{:.4f} Test Losss:{:.4f}'.format(epoch, train_loss, valid_loss))
-        print(f"[Training of the CNN is conlcuded, time elapsed: {datetime.now() - timestamp}]")
+            print('Epoch:{} Train Loss:{:.4f} Test Losss:{:.4f}'.format(epoch, train_loss, valid_loss))
+            print(f"[Training of the CNN is conlcuded, time elapsed: {datetime.now() - timestamp}]")
