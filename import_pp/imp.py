@@ -1,6 +1,8 @@
 """
 Importing & Preprocessing module
 """
+import random
+
 import numpy as np
 import torch.utils.data
 import torchvision as tv
@@ -28,14 +30,7 @@ def get_mean_std(dataset):
 
 
 def show_processed_imgs(dataset) -> None:
-    from torch.utils.data.dataloader import default_collate
-    loader = torch.utils.data.DataLoader(dataset, batch_size=6, shuffle=True,
-                                         collate_fn=lambda x: default_collate(x).cuda().detach())
-
-    print("AAAAAAAAAAA")
-
-    batch = next(loader.__iter__())
-    images, labels = batch
+    images, labels = dataset.__getitem__(random.randint(1, 6))
 
     grid = tv.utils.make_grid(images, n_row=3)
     plt.figure(figsize=(25, 25))
