@@ -30,7 +30,7 @@ def get_mean_std(dataset):
 
 
 def show_processed_imgs(dataset) -> None:
-    img = [torch.tensor(dataset.cpu().__getitem__(random.randint(1, 6))) for _ in range(6)]
+    img = [torch.tensor(dataset.to("cpu").__getitem__(random.randint(1, 6))) for _ in range(6)]
     images, labels = list(map(lambda x: x[0], img)), list(map(lambda x: x[1], img))
 
     grid = tv.utils.make_grid(images, n_row=3)
