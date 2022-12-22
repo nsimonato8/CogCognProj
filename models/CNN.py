@@ -1,79 +1,39 @@
-from datetime import datetime
-
-import torch
-from torch import nn
+import tensorflow as tf
+from tensorflow.keras import layers, models
 
 
 # https://androidkt.com/convolutional-neural-network-using-sequential-model-in-pytorch/
 
 class CNN:
-    def __init__(self, input_shape, n_classes=26, optimizer=None, loss_fn=None, learning_rate=0.1,
+    def __init__(self, input_shape, n_classes=26, activation='relu', optimizer='', loss_fn=None, learning_rate=0.1,
                  momentum=0.9, device=None):
         super().__init__()
-        self.model = nn.Sequential(
-            nn.Conv2d(in_channels=1, out_channels=64, kernel_size=(3, 3), padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=(2, 2)),
+        self.optimizer = optimizer
+        self.model = models.Sequential(layers=[
+            layers.Conv2d(filter=2, input_shape=input_shape, activation=activation, kernel_size=(3, 3),
+                          padding='valid'),
+            layers.MaxPooling2d(kernel_size=(2, 2)),
 
-            nn.Conv2d(in_channels=64, out_channels=128, kernel_size=(3, 3), padding=1),
-            nn.ReLU(),
-            nn.MaxPool2d(kernel_size=(2, 2)),
+            layers.Conv2d(filter=64, activation=activation, kernel_size=(3, 3), padding='valid'),
+            layers.MaxPooling2d(kernel_size=(2, 2)),
 
-            nn.Flatten(),
-            nn.Linear(128, 256),
-            nn.ReLU(),
-            nn.Linear(256, 512),
-            nn.ReLU(),
-            nn.Linear(512, n_classes))
+            layers.Flatten(),
+            layers.Dense(64),
+            layers.Dense(n_classes)])
 
-        if optimizer is None or loss_fn is None:
-            self.optimizer = torch.optim.SGD(self.model.parameters(), lr=learning_rate, momentum=momentum)
-            self.loss_fn = nn.CrossEntropyLoss()
+        if loss_fn is None:
+            self.loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+
+        self.model.compile(optimizer=self.optimizer, loss=self.loss_fn, metrics=['accuracy'])
 
         if device is not None:
             self.model.to(device)
         pass
 
     def train_CNN(self, num_epoch, train_ds, test_ds, batch_size=32):
-        timestamp = datetime.now()
-
-        train_ds_loader = torch.utils.data.DataLoader(train_ds, shuffle=True, batch_size=batch_size)
-        test_ds_loader = torch.utils.data.DataLoader(test_ds, shuffle=True, batch_size=batch_size)
-
-        train_losses = []
-        valid_losses = []
-
-        for epoch in range(1, num_epoch + 1):
-            train_loss = 0.0
-            valid_loss = 0.0
-
-            self.model.train()
-            for img, lbl in train_ds_loader:
-                img = img.cuda()
-                lbl = lbl.cuda()
-
-                self.optimizer.zero_grad()
-                predict = self.model(img)
-                loss = self.loss_fn(predict, lbl)
-                loss.backward()
-                self.optimizer.step()
-                train_loss += loss.item() * img.size(0)
-
-            self.model.eval()
-            for img, lbl in test_ds_loader:
-                img = img.cuda()
-                lbl = lbl.cuda()
-
-                predict = self.model(img)
-                loss = self.loss_fn(predict, lbl)
-
-                valid_loss += loss.item() * img.size(0)
-
-            train_loss = train_loss / len(train_ds_loader.sampler)
-            valid_loss = valid_loss / len(test_ds_loader.sampler)
-
-            train_losses.append(train_loss)
-            valid_losses.append(valid_loss)
-
-            print('Epoch:{} Train Loss:{:.4f} Test Losss:{:.4f}'.format(epoch, train_loss, valid_loss))
-            print(f"[Training of the CNN is conlcuded, time elapsed: {datetime.now() - timestamp}]")
+        self.model.fit(x=train_ds.data,
+                       y=train_ds.targets,
+                       epochs=num_epoch,
+                       batch_size=batch_size,
+                       validation_data=(test_ds.data, test_ds.targets),
+                       verbose=2)
