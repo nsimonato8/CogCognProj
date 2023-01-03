@@ -23,9 +23,9 @@ class CNN:
         pass
 
     def train_CNN(self, num_epoch, train_ds, test_ds, batch_size=32):
-        self.model.fit(x=train_ds.data,
-                       y=train_ds.targets,
+        self.model.fit(x=train_ds[0],
+                       y=train_ds[1],
                        epochs=num_epoch,
                        batch_size=batch_size,
-                       validation_data=(test_ds.data, test_ds.targets),
+                       validation_data=(test_ds[0], test_ds[1]),
                        verbose=2)
