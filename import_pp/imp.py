@@ -37,14 +37,14 @@ def show_processed_imgs(dataset) -> None:
 
 
 train_transform = transforms.Compose([
-    # transforms.Grayscale(num_output_channels=3),
+    # transforms.Grayscale(num_output_channels=1),
     transforms.RandomHorizontalFlip(),
     transforms.RandomRotation(10),
     transforms.ToTensor()
 ])
 
 test_transform = transforms.Compose([
-    # transforms.Grayscale(num_output_channels=3),
+    # transforms.Grayscale(num_output_channels=1),
     transforms.ToTensor()
 ])
 
