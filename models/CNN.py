@@ -14,12 +14,12 @@ class CNN:
         self.model = model
 
         if loss_fn is None:
-            self.loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True)
+            self.loss_fn = tf.keras.losses.SparseCategoricalCrossentropy(from_logits=False)
+        else:
+            self.loss_fn = loss_fn
 
         self.model.compile(optimizer=self.optimizer, loss=self.loss_fn, metrics=['accuracy'])
 
-        # if device is not None:
-        #     self.model.to(device)
         pass
 
     def train_CNN(self, num_epoch, train_ds, test_ds, batch_size=32):
